@@ -1,21 +1,33 @@
-package samuel.jose.mutantes_front;
+package samuel.jose.mutantes_front.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.ImageView;
 
+import samuel.jose.mutantes_front.R;
 import samuel.jose.mutantes_front.utils.DownloadTask;
 
-public class MainActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash_screen);
 
         ImageView imageView = findViewById(R.id.imageView);
         DownloadTask task = new DownloadTask(this, imageView);
         task.execute("https://yt3.ggpht.com/ytc/AMLnZu94v_ipnhXrgafSpoGb_vY8A0zNXwDrzqMa7UiWoA=s900-c-k-c0x00ffffff-no-rj");
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }
+        }, 3000);
     }
 }

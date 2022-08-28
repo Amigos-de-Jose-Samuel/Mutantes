@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/imageViewMutante"
+        android:layout_width="200dp"
+        android:layout_height="120dp"
+        android:layout_weight="1"
+        android:baselineAlignBottom="false"
+        android:maxWidth="200dp"
+        android:maxHeight="120dp"
+        android:minWidth="200dp"
+        android:minHeight="120dp"
+        android:textAlignment="textStart"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="NomeMutante"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textHabilidadeUm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Habilidade um"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/textHabilidadeDois"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="Habilidade dois"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/textHabilidadeTres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="Habilidade três"
+            android:textAlignment="textEnd" />
+    </LinearLayout>
+</LinearLayout>

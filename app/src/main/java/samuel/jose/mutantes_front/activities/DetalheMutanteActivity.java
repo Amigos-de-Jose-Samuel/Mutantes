@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class DetalheMutanteActivity extends AppCompatActivity {
 
     ImageView image;
     EditText editNome, editHabilidadeUm, editHabilidadeDois, editHabilidadeTres;
+    TextView usuarioNome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class DetalheMutanteActivity extends AppCompatActivity {
         editHabilidadeUm = findViewById(R.id.editHabilidadeUm);
         editHabilidadeDois = findViewById(R.id.editHabilidadeDois);
         editHabilidadeTres = findViewById(R.id.editHabilidadeTres);
+        usuarioNome = findViewById(R.id.editHabilidadeTres);
 
         Intent it = getIntent();
         Bundle params = it.getExtras();
@@ -33,10 +36,12 @@ public class DetalheMutanteActivity extends AppCompatActivity {
             String habilidadeUm = params.getString("habilidadeUm");
             String habilidadeDois = params.getString("habilidadeDois");
             String habilidadeTres = params.getString("habilidadeTres");
+            String usuario = params.getString("usuarioNome");
             editNome.setText(nome);
             editHabilidadeUm.setText(habilidadeUm);
             editHabilidadeDois.setText(habilidadeDois);
             editHabilidadeTres.setText(habilidadeTres);
+            usuarioNome.setText(usuario);
             image.setImageResource(media);
         }
     }

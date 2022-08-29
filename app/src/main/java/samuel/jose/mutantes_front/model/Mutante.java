@@ -1,6 +1,9 @@
 package samuel.jose.mutantes_front.model;
 
 public class Mutante {
+    private int idMutante;
+    private int idUsuario;
+    private String loginUsuarioCadastro;
     private int img;
     private String nome;
     private String habilidadeUm;
@@ -56,5 +59,29 @@ public class Mutante {
 
     public void setHabilidadeTres(String habilidadeTres) {
         this.habilidadeTres = habilidadeTres;
+    }
+
+    public int getIdMutante() {
+        return idMutante;
+    }
+
+    public void setIdMutante(int idMutante) {
+        this.idMutante = idMutante;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getLoginUsuarioCadastro() {
+        return loginUsuarioCadastro;
+    }
+
+    public void setLoginUsuarioCadastro(String loginUsuarioCadastro) {
+        this.loginUsuarioCadastro = loginUsuarioCadastro;
     }
 }

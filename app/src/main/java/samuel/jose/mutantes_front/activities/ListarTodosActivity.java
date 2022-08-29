@@ -5,11 +5,17 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import samuel.jose.mutantes_front.R;
 import samuel.jose.mutantes_front.adapter.AdapterMutantes;
+import samuel.jose.mutantes_front.apiMutante.RetrofitConfig;
+import samuel.jose.mutantes_front.model.ListaMutantes;
 import samuel.jose.mutantes_front.model.Mutante;
 import samuel.jose.mutantes_front.utils.RecyclerItemClickListener;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,13 +37,39 @@ public class ListarTodosActivity extends AppCompatActivity {
 
         Context context = this;
 
-        Mutante obj;
-        obj = new Mutante(0, "Teste", "voo", "correr", "força");
-        mutantes.add(obj);
-        obj = new Mutante(0, "Aaaaa", "morrer", "reviver", "virar água");
-        mutantes.add(obj);
-        obj = new Mutante(0, "Wolverine", "regenerar", "força", "esqueleto afiado");
-        mutantes.add(obj);
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Buscando mutantes ...");
+        progressDialog.show();
+
+        Call<ListaMutantes> callMutantes = new RetrofitConfig().getMutanteService().getAllMutantes();
+        callMutantes.enqueue(new Callback<ListaMutantes>() {
+
+            @Override
+            public void onResponse(Call<ListaMutantes> call, Response<ListaMutantes> response) {
+                if(response.isSuccessful()) {
+                    ListaMutantes listaMutantes = response.body();
+
+                    for(Mutante mutante: listaMutantes.getMutantes()) {
+                        mutantes.add(mutante);
+                    }
+                    progressDialog.dismiss();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListaMutantes> call, Throwable t) {
+
+            }
+        });
+
+        //Mutante obj;
+        //obj = new Mutante(0, "Teste", "voo", "correr", "força");
+        //mutantes.add(obj);
+        //obj = new Mutante(0, "Aaaaa", "morrer", "reviver", "virar água");
+        //mutantes.add(obj);
+        //obj = new Mutante(0, "Wolverine", "regenerar", "força", "esqueleto afiado");
+        //mutantes.add(obj);
 
         recyclerViewMutantes = findViewById(R.id.recyclerViewMutantes);
 

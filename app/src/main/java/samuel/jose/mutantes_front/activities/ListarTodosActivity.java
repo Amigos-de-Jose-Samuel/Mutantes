@@ -91,10 +91,6 @@ public class ListarTodosActivity extends AppCompatActivity {
 
                         Intent it = new Intent(context, DetalheMutanteActivity.class);
                         it.putExtra("nome", obj.getNome());
-//                        it.putExtra("image", obj.getImg());
-//                        it.putExtra("habilidadeUm", obj.getHabilidadeUm());
-//                        it.putExtra("habilidadeDois", obj.getHabilidadeDois());
-//                        it.putExtra("habilidadeTres", obj.getHabilidadeTres());
                         startActivity(it);
                     }
 

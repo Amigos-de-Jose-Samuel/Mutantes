@@ -47,10 +47,6 @@ public class AdapterMutantes extends RecyclerView.Adapter<AdapterMutantes.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Mutante obj = mutantes.get(position);
         holder.nome.setText(obj.getNome());
-        holder.habilidadeUm.setText(obj.getHabilidadeUm());
-        holder.habilidadeDois.setText(obj.getHabilidadeDois());
-        holder.habilidadeTres.setText(obj.getHabilidadeTres());
-        holder.img.setImageResource(obj.getImg());
     }
 
     @Override

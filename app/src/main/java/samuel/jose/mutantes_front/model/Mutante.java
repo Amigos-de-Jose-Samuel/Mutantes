@@ -1,32 +1,26 @@
 package samuel.jose.mutantes_front.model;
 
 public class Mutante {
-    private int idMutante;
+    private int id;
+    private String nome;
+    private byte[] foto;
     private int idUsuario;
     private String loginUsuarioCadastro;
-    private int img;
-    private String nome;
-    private String habilidadeUm;
-    private String habilidadeDois;
-    private String habilidadeTres;
 
-
-    public Mutante() {}
-
-    public Mutante(int img, String nome, String habilidadeUm, String habilidadeDois, String habilidadeTres) {
-        this.img = img;
+    public Mutante(int id, String nome, byte[] foto, int idUsuario, String loginUsuarioCadastro) {
+        this.id = id;
         this.nome = nome;
-        this.habilidadeUm = habilidadeUm;
-        this.habilidadeDois = habilidadeDois;
-        this.habilidadeTres = habilidadeTres;
+        this.foto = foto;
+        this.idUsuario = idUsuario;
+        this.loginUsuarioCadastro = loginUsuarioCadastro;
     }
 
-    public int getImg() {
-        return img;
+    public int getId() {
+        return id;
     }
 
-    public void setImg(int img) {
-        this.img = img;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -37,36 +31,12 @@ public class Mutante {
         this.nome = nome;
     }
 
-    public String getHabilidadeUm() {
-        return habilidadeUm;
+    public byte[] getFoto() {
+        return foto;
     }
 
-    public void setHabilidadeUm(String habilidadeUm) {
-        this.habilidadeUm = habilidadeUm;
-    }
-
-    public String getHabilidadeDois() {
-        return habilidadeDois;
-    }
-
-    public void setHabilidadeDois(String habilidadeDois) {
-        this.habilidadeDois = habilidadeDois;
-    }
-
-    public String getHabilidadeTres() {
-        return habilidadeTres;
-    }
-
-    public void setHabilidadeTres(String habilidadeTres) {
-        this.habilidadeTres = habilidadeTres;
-    }
-
-    public int getIdMutante() {
-        return idMutante;
-    }
-
-    public void setIdMutante(int idMutante) {
-        this.idMutante = idMutante;
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
 
     public int getIdUsuario() {

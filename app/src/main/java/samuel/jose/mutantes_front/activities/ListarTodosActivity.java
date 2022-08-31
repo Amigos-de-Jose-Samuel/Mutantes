@@ -11,7 +11,7 @@ import retrofit2.Response;
 import samuel.jose.mutantes_front.R;
 import samuel.jose.mutantes_front.adapter.AdapterMutantes;
 import samuel.jose.mutantes_front.apiMutante.RetrofitConfig;
-import samuel.jose.mutantes_front.model.ListaMutantes;
+import samuel.jose.mutantes_front.model.ListarMutantesResponse;
 import samuel.jose.mutantes_front.model.Mutante;
 import samuel.jose.mutantes_front.utils.RecyclerItemClickListener;
 
@@ -41,15 +41,15 @@ public class ListarTodosActivity extends AppCompatActivity {
         progressDialog.setMessage("Buscando mutantes ...");
         progressDialog.show();
 
-        Call<ListaMutantes> callMutantes = new RetrofitConfig().getMutanteService().getAllMutantes();
-        callMutantes.enqueue(new Callback<ListaMutantes>() {
+        Call<ListarMutantesResponse> callMutantes = new RetrofitConfig().getMutanteService().getAllMutantes();
+        callMutantes.enqueue(new Callback<ListarMutantesResponse>() {
 
             @Override
-            public void onResponse(Call<ListaMutantes> call, Response<ListaMutantes> response) {
+            public void onResponse(Call<ListarMutantesResponse> call, Response<ListarMutantesResponse> response) {
                 if(response.isSuccessful()) {
-                    ListaMutantes listaMutantes = response.body();
+                    ListarMutantesResponse listarMutantesResponse = response.body();
 
-                    for(Mutante mutante: listaMutantes.getMutantes()) {
+                    for(Mutante mutante: listarMutantesResponse.getMutantes()) {
                         mutantes.add(mutante);
                     }
                     progressDialog.dismiss();
@@ -58,7 +58,7 @@ public class ListarTodosActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ListaMutantes> call, Throwable t) {
+            public void onFailure(Call<ListarMutantesResponse> call, Throwable t) {
 
             }
         });
@@ -91,10 +91,10 @@ public class ListarTodosActivity extends AppCompatActivity {
 
                         Intent it = new Intent(context, DetalheMutanteActivity.class);
                         it.putExtra("nome", obj.getNome());
-                        it.putExtra("image", obj.getImg());
-                        it.putExtra("habilidadeUm", obj.getHabilidadeUm());
-                        it.putExtra("habilidadeDois", obj.getHabilidadeDois());
-                        it.putExtra("habilidadeTres", obj.getHabilidadeTres());
+//                        it.putExtra("image", obj.getImg());
+//                        it.putExtra("habilidadeUm", obj.getHabilidadeUm());
+//                        it.putExtra("habilidadeDois", obj.getHabilidadeDois());
+//                        it.putExtra("habilidadeTres", obj.getHabilidadeTres());
                         startActivity(it);
                     }
 

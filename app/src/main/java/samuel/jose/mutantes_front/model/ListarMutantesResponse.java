@@ -1,13 +1,13 @@
 package samuel.jose.mutantes_front.model;
 
-public class ListaMutantes {
+public class ListarMutantesResponse {
     private String sucesso;
     private String mensagem;
     private Mutante[] mutantes;
 
-    public ListaMutantes () {}
+    public ListarMutantesResponse() {}
 
-    public ListaMutantes(String sucesso, String mensagem, Mutante[] mutantes) {
+    public ListarMutantesResponse(String sucesso, String mensagem, Mutante[] mutantes) {
         this.sucesso = sucesso;
         this.mensagem = mensagem;
         this.mutantes = mutantes;

@@ -1,10 +1,10 @@
 package samuel.jose.mutantes_front.model;
 
-public class APIResponse {
+public class DefaultResponse {
     private boolean sucesso;
     private String mensagem;
 
-    public APIResponse(boolean sucesso, String mensagem) {
+    public DefaultResponse(boolean sucesso, String mensagem) {
         this.sucesso = sucesso;
         this.mensagem = mensagem;
     }

@@ -15,10 +15,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import samuel.jose.mutantes_front.R;
 import samuel.jose.mutantes_front.apiMutante.RetrofitConfig;
-import samuel.jose.mutantes_front.model.APIResponse;
-import samuel.jose.mutantes_front.model.ListaMutantes;
-import samuel.jose.mutantes_front.model.Login;
-import samuel.jose.mutantes_front.model.Mutante;
+import samuel.jose.mutantes_front.model.DefaultResponse;
+import samuel.jose.mutantes_front.model.LoginBody;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText loginInput;
@@ -47,11 +45,11 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Logando...");
         progressDialog.show();
 
-        Call<APIResponse> callLogin = new RetrofitConfig().getMutanteService().login(new Login(loginText, passwordText));
-        callLogin.enqueue(new Callback<APIResponse>() {
+        Call<DefaultResponse> callLogin = new RetrofitConfig().getMutanteService().login(new LoginBody(loginText, passwordText));
+        callLogin.enqueue(new Callback<DefaultResponse>() {
 
             @Override
-            public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
+            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                 progressDialog.dismiss();
 
                 if (response.isSuccessful()) {
@@ -65,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<APIResponse> call, Throwable t) {
+            public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 t.printStackTrace();
             }
         });

@@ -1,10 +1,10 @@
 package samuel.jose.mutantes_front.model;
 
-public class Login {
+public class LoginBody {
     private String login;
     private String senha;
 
-    public Login(String login, String senha) {
+    public LoginBody(String login, String senha) {
         this.login = login;
         this.senha = senha;
     }

@@ -45,7 +45,7 @@ public class DashboardResponse {
         this.habilidades = habilidades;
     }
 
-    private class Habilidade {
+    public class Habilidade {
         private String habilidade;
         private int quantidade;
 

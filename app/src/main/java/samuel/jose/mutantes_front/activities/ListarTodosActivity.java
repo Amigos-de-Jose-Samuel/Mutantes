@@ -63,14 +63,6 @@ public class ListarTodosActivity extends AppCompatActivity {
             }
         });
 
-        //Mutante obj;
-        //obj = new Mutante(0, "Teste", "voo", "correr", "força");
-        //mutantes.add(obj);
-        //obj = new Mutante(0, "Aaaaa", "morrer", "reviver", "virar água");
-        //mutantes.add(obj);
-        //obj = new Mutante(0, "Wolverine", "regenerar", "força", "esqueleto afiado");
-        //mutantes.add(obj);
-
         recyclerViewMutantes = findViewById(R.id.recyclerViewMutantes);
 
         AdapterMutantes adapter = new AdapterMutantes(mutantes);
@@ -90,7 +82,7 @@ public class ListarTodosActivity extends AppCompatActivity {
                         Mutante obj = mutantes.get(position);
 
                         Intent it = new Intent(context, DetalheMutanteActivity.class);
-                        it.putExtra("nome", obj.getNome());
+                        it.putExtra("id", obj.getId());
                         startActivity(it);
                     }
 

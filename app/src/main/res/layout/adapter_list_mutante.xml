@@ -30,7 +30,7 @@
             android:id="@+id/textViewName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="NomeMutante"
             android:textAlignment="center"
             android:textSize="24sp" />
@@ -39,23 +39,9 @@
             android:id="@+id/textHabilidadeUm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Habilidade um"
-            android:textAlignment="textEnd" />
+            android:layout_weight="1"
+            android:text="Ver detalhes mutante"
+            android:textAlignment="center" />
 
-        <TextView
-            android:id="@+id/textHabilidadeDois"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="Habilidade dois"
-            android:textAlignment="textEnd" />
-
-        <TextView
-            android:id="@+id/textHabilidadeTres"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="Habilidade três"
-            android:textAlignment="textEnd" />
     </LinearLayout>
 </LinearLayout>

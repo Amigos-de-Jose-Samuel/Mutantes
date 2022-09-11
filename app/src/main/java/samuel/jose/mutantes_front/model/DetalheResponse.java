@@ -6,7 +6,7 @@ public class DetalheResponse {
     private Mutante mutante;
     private Habilidade[] habilidades;
 
-    private class Habilidade {
+    public class Habilidade {
         private int id;
         private String descricao;
 
@@ -30,5 +30,37 @@ public class DetalheResponse {
         public void setDescricao(String descricao) {
             this.descricao = descricao;
         }
+    }
+
+    public boolean isSucesso() {
+        return sucesso;
+    }
+
+    public void setSucesso(boolean sucesso) {
+        this.sucesso = sucesso;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
+
+    public Mutante getMutante() {
+        return mutante;
+    }
+
+    public void setMutante(Mutante mutante) {
+        this.mutante = mutante;
+    }
+
+    public Habilidade[] getHabilidades() {
+        return habilidades;
+    }
+
+    public void setHabilidades(Habilidade[] habilidades) {
+        this.habilidades = habilidades;
     }
 }

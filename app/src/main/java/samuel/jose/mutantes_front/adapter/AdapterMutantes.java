@@ -30,8 +30,8 @@ public class AdapterMutantes extends RecyclerView.Adapter<AdapterMutantes.MyView
             super(view);
             nome = view.findViewById(R.id.textViewName);
             habilidadeUm = view.findViewById(R.id.textHabilidadeUm);
-            habilidadeDois = view.findViewById(R.id.textHabilidadeDois);
-            habilidadeTres = view.findViewById(R.id.textHabilidadeTres);
+            //habilidadeDois = view.findViewById(R.id.textHabilidadeDois);
+            //habilidadeTres = view.findViewById(R.id.textHabilidadeTres);
             img = view.findViewById(R.id.imageViewMutante);
         }
     }

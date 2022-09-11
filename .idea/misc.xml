@@ -6,6 +6,7 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/mutantes/app/src/main/res/layout/activity_cadastro_mutante.xml" value="0.5" />
         <entry key="..\:/Users/User/AndroidStudioProjects/mutantes/app/src/main/res/layout/activity_detalhe_mutante.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/User/AndroidStudioProjects/mutantes/app/src/main/res/layout/activity_listar_todos.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/mutantes/app/src/main/res/layout/activity_listar_todos_poder.xml" value="0.33" />
         <entry key="..\:/Users/User/AndroidStudioProjects/mutantes/app/src/main/res/layout/activity_login.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/User/AndroidStudioProjects/mutantes/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Users/User/AndroidStudioProjects/mutantes/app/src/main/res/layout/activity_splash_screen.xml" value="0.27291666666666664" />
@@ -13,7 +14,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

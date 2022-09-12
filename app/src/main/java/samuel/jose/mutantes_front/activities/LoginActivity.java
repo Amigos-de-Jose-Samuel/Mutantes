@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                         return;
                     }
-                    Toast.makeText(context, "Invalid login!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, response.body().getMensagem(), Toast.LENGTH_SHORT).show();
                 }
             }
 

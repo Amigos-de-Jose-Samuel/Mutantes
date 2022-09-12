@@ -3,6 +3,8 @@ package samuel.jose.mutantes_front.activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +15,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import samuel.jose.mutantes_front.R;
+import samuel.jose.mutantes_front.apiMutante.RetrofitConfig;
+import samuel.jose.mutantes_front.model.DashboardResponse;
+import samuel.jose.mutantes_front.model.DefaultResponse;
+import samuel.jose.mutantes_front.model.Mutante;
+import samuel.jose.mutantes_front.model.NovoMutanteBody;
 
 public class CadastroMutanteActivity extends AppCompatActivity {
 
@@ -49,13 +65,65 @@ public class CadastroMutanteActivity extends AppCompatActivity {
         }
     }
 
-    public void cadastrar(View view) {
-        if(habilidadeUm.length() <= 2 && habilidadeDois.length() <= 2 && habilidadeTres.length() <= 2) {
+    public void cadastrar(View view) throws IOException {
+        if (nomeMutante.length() == 0) {
+            Toast.makeText(this, "Deve preencher nome do mutante!!!", Toast.LENGTH_SHORT).show();
+        } else if (habilidadeUm.length() <= 2 && habilidadeDois.length() <= 2 && habilidadeTres.length() <= 2) {
             Toast.makeText(this, "Deve preencher pelo menos uma habilidade!!!", Toast.LENGTH_SHORT).show();
         } else {
-            Intent it = new Intent(this, MainActivity.class);
-            it.putExtra("mensagem", "Mutante cadatrado com sucesso");
-            startActivity(it);
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Cadastrando...");
+            progressDialog.show();
+
+            byte[] byteImage = null;
+            if (uriImagem != null) {
+                InputStream iStream = getContentResolver().openInputStream(uriImagem);
+                byteImage = getBytes(iStream);
+            }
+
+            Mutante mutante = new Mutante(nomeMutante.getText().toString(), byteImage);
+
+            List<String> habilidadesList = new ArrayList<>();
+            if (habilidadeUm.length() > 0) {
+                habilidadesList.add(habilidadeUm.getText().toString());
+            }
+            if (habilidadeDois.length() > 0) {
+                habilidadesList.add(habilidadeDois.getText().toString());
+            }
+            if (habilidadeTres.length() > 0) {
+                habilidadesList.add(habilidadeTres.getText().toString());
+            }
+            String[] habilidadesArray = habilidadesList.toArray(new String[0]);
+
+            Call<DefaultResponse> callDashboard = new RetrofitConfig().getMutanteService().novoMutante(new NovoMutanteBody(mutante, habilidadesArray));
+            callDashboard.enqueue(new Callback<DefaultResponse>() {
+                @Override
+                public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                    System.out.println(response.isSuccessful() + " " + response.body().isSucesso());
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), response.body().getMensagem(), Toast.LENGTH_SHORT).show();
+                    if (response.isSuccessful() && response.body().isSucesso()) {
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
         }
+    }
+
+    private byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 }

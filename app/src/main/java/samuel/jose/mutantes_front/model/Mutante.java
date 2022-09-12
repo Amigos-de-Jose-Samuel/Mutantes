@@ -4,8 +4,13 @@ public class Mutante {
     private int id;
     private String nome;
     private byte[] foto;
-    private int idUsuario;
-    private String loginUsuarioCadastro;
+    private int idUsuario = 1;
+    private String loginUsuarioCadastro = "galileu";
+
+    public Mutante(String nome, byte[] foto) {
+        this.nome = nome;
+        this.foto = foto;
+    }
 
     public Mutante(int id, String nome, byte[] foto, int idUsuario, String loginUsuarioCadastro) {
         this.id = id;

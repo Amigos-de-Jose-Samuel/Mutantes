@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         habilidadeTresTextView = findViewById(R.id.habilidadeTres);
         inputPesquisar = findViewById(R.id.inputPesquisar);
 
+        getMutantes();
+    }
+
+    private void getMutantes() {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Carregando...");
         progressDialog.show();
@@ -55,16 +59,24 @@ public class MainActivity extends AppCompatActivity {
                     if (response.body().isSucesso()) {
                         DashboardResponse dashboardResponse = response.body();
                         quantidade = dashboardResponse.getQuantidadeMutantes();
+                        quantidadeMutantes.setText("" + quantidade);
 
                         DashboardResponse.Habilidade[] habilidades = dashboardResponse.getHabilidades();
-                        habilidadeUm = habilidades[0].getHabilidade();
-                        habilidadeDois = habilidades[1].getHabilidade();
-                        habilidadeTres = habilidades[2].getHabilidade();
 
-                        quantidadeMutantes.setText("" + quantidade);
-                        habilidadeUmTextView.setText(habilidadeUm);
-                        habilidadeDoisTextView.setText(habilidadeDois);
-                        habilidadeTresTextView.setText(habilidadeTres);
+                        if (habilidades.length > 0) {
+                            habilidadeUm = habilidades[0].getHabilidade();
+                            habilidadeUmTextView.setText(habilidadeUm);
+                        }
+
+                        if (habilidades.length > 1) {
+                            habilidadeDois = habilidades[1].getHabilidade();
+                            habilidadeDoisTextView.setText(habilidadeDois);
+                        }
+
+                        if (habilidades.length > 2) {
+                            habilidadeTres = habilidades[2].getHabilidade();
+                            habilidadeTresTextView.setText(habilidadeTres);
+                        }
 
                         progressDialog.dismiss();
                     }
@@ -80,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void cadastrarMutante(View view) {
         Intent it = new Intent(this, CadastroMutanteActivity.class);
-        it.putExtra("context", (Parcelable) MainActivity.this);
         startActivity(it);
     }
 
@@ -98,5 +109,11 @@ public class MainActivity extends AppCompatActivity {
     public void exitApp(View view) {
         finish();
         System.exit(0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getMutantes();
     }
 }

@@ -32,13 +32,10 @@ public class CadastroMutanteActivity extends AppCompatActivity {
         habilidadeTres = findViewById(R.id.inputHabilidadeTres);
         imageView = findViewById(R.id.inputImagem);
 
-        ((Button) findViewById(R.id.carregarImagem)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 0);
-            }
+        ((Button) findViewById(R.id.carregarImagem)).setOnClickListener((View.OnClickListener) view -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, 0);
         });
 
     }
@@ -56,7 +53,6 @@ public class CadastroMutanteActivity extends AppCompatActivity {
         if(habilidadeUm.length() <= 2 && habilidadeDois.length() <= 2 && habilidadeTres.length() <= 2) {
             Toast.makeText(this, "Deve preencher pelo menos uma habilidade!!!", Toast.LENGTH_SHORT).show();
         } else {
-
             Intent it = new Intent(this, MainActivity.class);
             it.putExtra("mensagem", "Mutante cadatrado com sucesso");
             startActivity(it);

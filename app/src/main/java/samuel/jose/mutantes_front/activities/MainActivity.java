@@ -2,9 +2,11 @@ package samuel.jose.mutantes_front.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,38 +26,61 @@ import samuel.jose.mutantes_front.utils.DownloadTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView quantidadeMutantes, habilidadeUm, habilidadeDois, habilidadeTres;
+    TextView quantidadeMutantes, habilidadeUmTextView, habilidadeDoisTextView, habilidadeTresTextView;
     EditText inputPesquisar;
+
+    int quantidade;
+    String habilidadeUm, habilidadeDois, habilidadeTres;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Context context = this;
-
         quantidadeMutantes = findViewById(R.id.quantidadeMutantes);
-        habilidadeUm = findViewById(R.id.habilidadeUm);
-        habilidadeDois = findViewById(R.id.habilidadeDois);
-        habilidadeTres = findViewById(R.id.habilidadeTres);
+        habilidadeUmTextView = findViewById(R.id.habilidadeUm);
+        habilidadeDoisTextView = findViewById(R.id.habilidadeDois);
+        habilidadeTresTextView = findViewById(R.id.habilidadeTres);
         inputPesquisar = findViewById(R.id.inputPesquisar);
 
-        Intent it = getIntent();
-        Bundle params = it.getExtras();
-        if (it != null && params != null) {
-            String mensagem = params.getString("mensagem");
-            if(mensagem != null)
-                Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
-            int quantidade = params.getInt("quantidade");
-            quantidadeMutantes.setText("" + quantidade);
-            habilidadeUm.setText(params.getString("habilidadeUm"));
-            habilidadeDois.setText(params.getString("habilidadeDois"));
-            habilidadeTres.setText(params.getString("habilidadeTres"));
-        }
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Carregando...");
+        progressDialog.show();
+
+        Call<DashboardResponse> callDashboard = new RetrofitConfig().getMutanteService().dashboard();
+        callDashboard.enqueue(new Callback<DashboardResponse>() {
+            @Override
+            public void onResponse(Call<DashboardResponse> call, Response<DashboardResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().isSucesso()) {
+                        DashboardResponse dashboardResponse = response.body();
+                        quantidade = dashboardResponse.getQuantidadeMutantes();
+
+                        DashboardResponse.Habilidade[] habilidades = dashboardResponse.getHabilidades();
+                        habilidadeUm = habilidades[0].getHabilidade();
+                        habilidadeDois = habilidades[1].getHabilidade();
+                        habilidadeTres = habilidades[2].getHabilidade();
+
+                        quantidadeMutantes.setText("" + quantidade);
+                        habilidadeUmTextView.setText(habilidadeUm);
+                        habilidadeDoisTextView.setText(habilidadeDois);
+                        habilidadeTresTextView.setText(habilidadeTres);
+
+                        progressDialog.dismiss();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DashboardResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     public void cadastrarMutante(View view) {
         Intent it = new Intent(this, CadastroMutanteActivity.class);
+        it.putExtra("context", (Parcelable) MainActivity.this);
         startActivity(it);
     }
 
@@ -68,5 +93,10 @@ public class MainActivity extends AppCompatActivity {
         Intent it = new Intent(this, ListarTodosPoderActivity.class);
         it.putExtra("poder", inputPesquisar.getText().toString());
         startActivity(it);
+    }
+
+    public void exitApp(View view) {
+        finish();
+        System.exit(0);
     }
 }

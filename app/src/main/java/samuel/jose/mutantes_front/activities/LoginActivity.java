@@ -23,9 +23,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginInput;
     private EditText passwordInput;
 
-    int quantidade;
-    String habilidadeUm, habilidadeDois, habilidadeTres;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,59 +46,28 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Logando...");
         progressDialog.show();
 
-        Call<DashboardResponse> callDashboard = new RetrofitConfig().getMutanteService().dashboard();
-        callDashboard.enqueue(new Callback<DashboardResponse>() {
+        Call<DefaultResponse> callLogin = new RetrofitConfig().getMutanteService().login(new LoginBody(loginText, passwordText));
+        callLogin.enqueue(new Callback<DefaultResponse>() {
+
             @Override
-            public void onResponse(Call<DashboardResponse> call, Response<DashboardResponse> response) {
+            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                progressDialog.dismiss();
+
                 if (response.isSuccessful()) {
                     if (response.body().isSucesso()) {
-                        DashboardResponse dashboardResponse = response.body();
-                        quantidade = dashboardResponse.getQuantidadeMutantes();
-                        DashboardResponse.Habilidade[] habilidades = dashboardResponse.getHabilidades();
-                        habilidadeUm = habilidades[0].getHabilidade();
-                        habilidadeDois = habilidades[1].getHabilidade();
-                        habilidadeTres = habilidades[2].getHabilidade();
-
-
-                        Call<DefaultResponse> callLogin = new RetrofitConfig().getMutanteService().login(new LoginBody(loginText, passwordText));
-                        callLogin.enqueue(new Callback<DefaultResponse>() {
-
-                            @Override
-                            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                                progressDialog.dismiss();
-
-                                if (response.isSuccessful()) {
-                                    if (response.body().isSucesso()) {
-                                        Intent it = new Intent(context, MainActivity.class);
-                                        it.putExtra("quantidade", quantidade);
-                                        it.putExtra("habilidadeUm", habilidadeUm);
-                                        it.putExtra("habilidadeDois", habilidadeDois);
-                                        it.putExtra("habilidadeTres", habilidadeTres);
-                                        startActivity(it);
-                                        finish();
-                                        return;
-                                    }
-                                    Toast.makeText(context, "Invalid login!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<DefaultResponse> call, Throwable t) {
-                                t.printStackTrace();
-                            }
-                        });
-
-
+                        Intent it = new Intent(context, MainActivity.class);
+                        startActivity(it);
+                        finish();
+                        return;
                     }
+                    Toast.makeText(context, "Invalid login!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<DashboardResponse> call, Throwable t) {
-
+            public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                t.printStackTrace();
             }
         });
-
-
     }
 }

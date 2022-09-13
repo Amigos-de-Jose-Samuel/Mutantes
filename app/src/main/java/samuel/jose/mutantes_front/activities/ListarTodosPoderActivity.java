@@ -31,18 +31,23 @@ import java.util.List;
 public class ListarTodosPoderActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewMutantes;
-    private List<Mutante> mutantes = new ArrayList<>();
+    private List<Mutante> mutantes;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_todos_poder);
+        context = this;
+        getMutantes(context);
+    }
 
-        Context context = this;
-
+    public void getMutantes(Context context) {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Buscando mutantes com poder fornecido ...");
         progressDialog.show();
+
+        mutantes = new ArrayList<>();
 
         Intent it = getIntent();
         Bundle params = it.getExtras();
@@ -92,6 +97,7 @@ public class ListarTodosPoderActivity extends AppCompatActivity {
                                 Intent it = new Intent(context, DetalheMutanteActivity.class);
                                 it.putExtra("id", obj.getId());
                                 startActivity(it);
+                                finish();
                             }
 
                             @Override

@@ -1,5 +1,6 @@
 package samuel.jose.mutantes_front.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import retrofit2.Call;
@@ -10,40 +11,55 @@ import samuel.jose.mutantes_front.apiMutante.RetrofitConfig;
 import samuel.jose.mutantes_front.model.DashboardResponse;
 import samuel.jose.mutantes_front.model.DefaultResponse;
 import samuel.jose.mutantes_front.model.DetalheResponse;
+import samuel.jose.mutantes_front.model.EditarBody;
 import samuel.jose.mutantes_front.model.ListarMutantesResponse;
 import samuel.jose.mutantes_front.model.LoginBody;
 import samuel.jose.mutantes_front.model.Mutante;
+import samuel.jose.mutantes_front.model.NovoMutanteBody;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 public class DetalheMutanteActivity extends AppCompatActivity {
 
     ImageView image;
+    Uri uriImagem;
     EditText editNome, editHabilidadeUm, editHabilidadeDois, editHabilidadeTres;
     TextView usuarioNome;
     int idMutante;
-    int quantidade;
-    String habilidadeUm, habilidadeDois, habilidadeTres;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhe_mutante);
 
-        image = findViewById(R.id.image);
+        image = findViewById(R.id.imageView2);
         editNome = findViewById(R.id.editNome);
         editHabilidadeUm = findViewById(R.id.editHabilidadeUm);
         editHabilidadeDois = findViewById(R.id.editHabilidadeDois);
         editHabilidadeTres = findViewById(R.id.editHabilidadeTres);
         usuarioNome = findViewById(R.id.nomeUsuario);
+
+        ((Button) findViewById(R.id.alterar_foto)).setOnClickListener((View.OnClickListener) view -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, 0);
+        });
 
         Intent it = getIntent();
         Bundle params = it.getExtras();
@@ -90,10 +106,53 @@ public class DetalheMutanteActivity extends AppCompatActivity {
         }
     }
 
-    public void alterarMutante(View view) {
-        Intent it = new Intent(this, MainActivity.class);
-        it.putExtra("mensagem", "Mutante alterado com sucesso");
-        startActivity(it);
+    public void alterarMutante(View view) throws IOException {
+        if (editNome.length() == 0) {
+            Toast.makeText(this, "Deve preencher nome do mutante!!!", Toast.LENGTH_SHORT).show();
+        } else if (editHabilidadeUm.length() <= 2 && editHabilidadeDois.length() <= 2 && editHabilidadeTres.length() <= 2) {
+            Toast.makeText(this, "Deve preencher pelo menos uma habilidade!!!", Toast.LENGTH_SHORT).show();
+        } else {
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Cadastrando...");
+            progressDialog.show();
+
+            byte[] byteImage = null;
+            if (uriImagem != null) {
+                InputStream iStream = getContentResolver().openInputStream(uriImagem);
+                byteImage = getBytes(iStream);
+            }
+
+            Mutante mutante = new Mutante(idMutante, editNome.getText().toString(), byteImage);
+
+            List<String> habilidadesList = new ArrayList<>();
+            if (editHabilidadeUm.length() > 0) {
+                habilidadesList.add(editHabilidadeUm.getText().toString());
+            }
+            if (editHabilidadeDois.length() > 0) {
+                habilidadesList.add(editHabilidadeDois.getText().toString());
+            }
+            if (editHabilidadeTres.length() > 0) {
+                habilidadesList.add(editHabilidadeTres.getText().toString());
+            }
+            String[] habilidadesArray = habilidadesList.toArray(new String[0]);
+
+            Call<DefaultResponse> callDashboard = new RetrofitConfig().getMutanteService().editar(new EditarBody(mutante, habilidadesArray));
+            callDashboard.enqueue(new Callback<DefaultResponse>() {
+                @Override
+                public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), response.body().getMensagem(), Toast.LENGTH_SHORT).show();
+                    if (response.isSuccessful() && response.body().isSucesso()) {
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
     }
 
     public void alterarFoto(View view) {
@@ -101,8 +160,6 @@ public class DetalheMutanteActivity extends AppCompatActivity {
     }
 
     public void removerMutante(View view) {
-        Context context = this;
-
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Removendo mutante ...");
         progressDialog.show();
@@ -113,43 +170,35 @@ public class DetalheMutanteActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                 if (response.isSuccessful()) {
-                    DefaultResponse defaultResponse = response.body();
                     progressDialog.dismiss();
-
-
-                    Call<DashboardResponse> callDashboard = new RetrofitConfig().getMutanteService().dashboard();
-                    callDashboard.enqueue(new Callback<DashboardResponse>() {
-                        @Override
-                        public void onResponse(Call<DashboardResponse> call, Response<DashboardResponse> response) {
-                            if (response.isSuccessful()) {
-                                if (response.body().isSucesso()) {
-                                    DashboardResponse dashboardResponse = response.body();
-                                    quantidade = dashboardResponse.getQuantidadeMutantes();
-                                    DashboardResponse.Habilidade[] habilidades = dashboardResponse.getHabilidades();
-                                    habilidadeUm = habilidades[0].getHabilidade();
-                                    habilidadeDois = habilidades[1].getHabilidade();
-                                    habilidadeTres = habilidades[2].getHabilidade();
-                                    Intent it = new Intent(context, MainActivity.class);
-                                    it.putExtra("mensagem", defaultResponse.getMensagem());
-                                    it.putExtra("quantidade", quantidade);
-                                    it.putExtra("habilidadeUm", habilidadeUm);
-                                    it.putExtra("habilidadeDois", habilidadeDois);
-                                    it.putExtra("habilidadeTres", habilidadeTres);
-                                    startActivity(it);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<DashboardResponse> call, Throwable t) {
-
-                        }
-                    });
+                    Toast.makeText(getApplicationContext(), response.body().getMensagem(), Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) { }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 0) {
+            uriImagem = data.getData();
+            image.setImageURI(uriImagem);
+        }
+    }
+
+    private byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 }

@@ -5,10 +5,11 @@ public class Mutante {
     private String nome;
     private byte[] foto;
     private int idUsuario = 1;
-    private String loginUsuarioCadastro = "galileu";
+    private String loginUsuarioCadastro;
 
-    public Mutante(String nome, byte[] foto) {
+    public Mutante(String nome, String loginUsuarioCadastro, byte[] foto) {
         this.nome = nome;
+        this.loginUsuarioCadastro = loginUsuarioCadastro;
         this.foto = foto;
     }
 
@@ -18,6 +19,12 @@ public class Mutante {
         this.foto = foto;
         this.idUsuario = idUsuario;
         this.loginUsuarioCadastro = loginUsuarioCadastro;
+    }
+
+    public Mutante(int idMutante, String nome, byte[] image) {
+        this.id = idMutante;
+        this.nome = nome;
+        this.foto = image;
     }
 
     public int getId() {

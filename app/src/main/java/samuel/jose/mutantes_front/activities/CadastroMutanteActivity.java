@@ -36,6 +36,7 @@ public class CadastroMutanteActivity extends AppCompatActivity {
     EditText nomeMutante, habilidadeUm, habilidadeDois, habilidadeTres;
     ImageView imageView;
     Uri uriImagem;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +48,13 @@ public class CadastroMutanteActivity extends AppCompatActivity {
         habilidadeDois = findViewById(R.id.inputHabilidadeDois);
         habilidadeTres = findViewById(R.id.inputHabilidadeTres);
         imageView = findViewById(R.id.inputImagem);
+        username = getIntent().getStringExtra("username");
 
         ((Button) findViewById(R.id.carregarImagem)).setOnClickListener((View.OnClickListener) view -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent, 0);
         });
-
     }
 
     @Override
@@ -81,7 +82,7 @@ public class CadastroMutanteActivity extends AppCompatActivity {
                 byteImage = getBytes(iStream);
             }
 
-            Mutante mutante = new Mutante(nomeMutante.getText().toString(), byteImage);
+            Mutante mutante = new Mutante(nomeMutante.getText().toString(), username, byteImage);
 
             List<String> habilidadesList = new ArrayList<>();
             if (habilidadeUm.length() > 0) {
@@ -99,7 +100,6 @@ public class CadastroMutanteActivity extends AppCompatActivity {
             callDashboard.enqueue(new Callback<DefaultResponse>() {
                 @Override
                 public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                    System.out.println(response.isSuccessful() + " " + response.body().isSucesso());
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), response.body().getMensagem(), Toast.LENGTH_SHORT).show();
                     if (response.isSuccessful() && response.body().isSucesso()) {

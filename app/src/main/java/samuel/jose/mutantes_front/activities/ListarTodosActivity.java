@@ -28,18 +28,23 @@ import java.util.List;
 
 public class ListarTodosActivity extends AppCompatActivity {
     private RecyclerView recyclerViewMutantes;
-    private List<Mutante> mutantes = new ArrayList<>();
+    private List<Mutante> mutantes;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_todos);
+        context = this;
+        getMutantes(context);
+    }
 
-        Context context = this;
-
+    private void getMutantes(Context context) {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Buscando mutantes ...");
         progressDialog.show();
+
+        mutantes = new ArrayList<>();
 
         Call<ListarMutantesResponse> callMutantes = new RetrofitConfig().getMutanteService().getAllMutantes();
         callMutantes.enqueue(new Callback<ListarMutantesResponse>() {
@@ -53,7 +58,6 @@ public class ListarTodosActivity extends AppCompatActivity {
                         mutantes.add(mutante);
                     }
                     progressDialog.dismiss();
-
                 }
             }
 
@@ -73,29 +77,30 @@ public class ListarTodosActivity extends AppCompatActivity {
         recyclerViewMutantes.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
         recyclerViewMutantes.setAdapter(adapter);
         recyclerViewMutantes.addOnItemTouchListener(
-            new RecyclerItemClickListener(
-                getApplicationContext(),
-                    recyclerViewMutantes,
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Mutante obj = mutantes.get(position);
+                new RecyclerItemClickListener(
+                        getApplicationContext(),
+                        recyclerViewMutantes,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Mutante obj = mutantes.get(position);
 
-                        Intent it = new Intent(context, DetalheMutanteActivity.class);
-                        it.putExtra("id", obj.getId());
-                        startActivity(it);
-                    }
+                                Intent it = new Intent(context, DetalheMutanteActivity.class);
+                                it.putExtra("id", obj.getId());
+                                startActivity(it);
+                                finish();
+                            }
 
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                    }
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                            }
 
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    }
-                }
-            )
+                            }
+                        }
+                )
         );
     }
 }

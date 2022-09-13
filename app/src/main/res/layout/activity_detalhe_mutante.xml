@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editNome" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/alterar_foto"
         android:layout_width="113dp"
         android:layout_height="63dp"
         android:layout_marginTop="56dp"

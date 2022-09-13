@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     EditText inputPesquisar;
 
     int quantidade;
-    String habilidadeUm, habilidadeDois, habilidadeTres;
+    String habilidadeUm, habilidadeDois, habilidadeTres, username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         habilidadeDoisTextView = findViewById(R.id.habilidadeDois);
         habilidadeTresTextView = findViewById(R.id.habilidadeTres);
         inputPesquisar = findViewById(R.id.inputPesquisar);
+
+        username = getIntent().getStringExtra("username");
 
         getMutantes();
     }
@@ -62,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
                         quantidadeMutantes.setText("" + quantidade);
 
                         DashboardResponse.Habilidade[] habilidades = dashboardResponse.getHabilidades();
+
+                        habilidadeUmTextView.setText("");
+                        habilidadeDoisTextView.setText("");
+                        habilidadeTresTextView.setText("");
 
                         if (habilidades.length > 0) {
                             habilidadeUm = habilidades[0].getHabilidade();
@@ -92,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void cadastrarMutante(View view) {
         Intent it = new Intent(this, CadastroMutanteActivity.class);
+        it.putExtra("username", username);
         startActivity(it);
     }
 
@@ -101,6 +108,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void pesquisarPoder(View view) {
+        if (inputPesquisar.length() == 0) {
+            Toast.makeText(this, "Informe um poder!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent it = new Intent(this, ListarTodosPoderActivity.class);
         it.putExtra("poder", inputPesquisar.getText().toString());
         startActivity(it);

@@ -101,9 +101,11 @@ public class DetalheMutanteActivity extends AppCompatActivity {
                             default:
                         }
                         usuarioNome.setText(detalheResponse.getMutante().getLoginUsuarioCadastro());
-                        byte[] encodeByte = Base64.decode(detalheResponse.getMutante().getFoto(),Base64.DEFAULT);
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-                        image.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 300, 300, false));
+                        if (detalheResponse.getMutante().getFoto() != null) {
+                            byteImage = Base64.decode(detalheResponse.getMutante().getFoto(),Base64.DEFAULT);
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(byteImage, 0, byteImage.length);
+                            image.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 300, 300, false));
+                        }
                         progressDialog.dismiss();
                     }
                 }

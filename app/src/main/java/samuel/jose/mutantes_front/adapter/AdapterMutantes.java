@@ -1,5 +1,8 @@
 package samuel.jose.mutantes_front.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +50,16 @@ public class AdapterMutantes extends RecyclerView.Adapter<AdapterMutantes.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Mutante obj = mutantes.get(position);
         holder.nome.setText(obj.getNome());
+        if (obj.getFoto() != null) {
+            try {
+                byte[] encodeByte = Base64.decode(obj.getFoto(),Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+                holder.img.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 300, 300, false));
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

@@ -4,15 +4,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -26,7 +27,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import samuel.jose.mutantes_front.R;
 import samuel.jose.mutantes_front.apiMutante.RetrofitConfig;
-import samuel.jose.mutantes_front.model.DashboardResponse;
 import samuel.jose.mutantes_front.model.DefaultResponse;
 import samuel.jose.mutantes_front.model.Mutante;
 import samuel.jose.mutantes_front.model.NovoMutanteBody;
@@ -37,6 +37,7 @@ public class CadastroMutanteActivity extends AppCompatActivity {
     ImageView imageView;
     Uri uriImagem;
     String username;
+    byte[] byteImage = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +62,20 @@ public class CadastroMutanteActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 0) {
-            uriImagem = data.getData();
-            imageView.setImageURI(uriImagem);
+            try {
+                uriImagem = data.getData();
+//                imageView.setImageURI(uriImagem);
+
+                Bitmap input_bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uriImagem);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                input_bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byteImage = stream.toByteArray();
+
+                Bitmap output_bmp = BitmapFactory.decodeByteArray(byteImage, 0, byteImage.length);
+                imageView.setImageBitmap(Bitmap.createScaledBitmap(output_bmp, 300, 300, false));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -75,12 +88,6 @@ public class CadastroMutanteActivity extends AppCompatActivity {
             ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Cadastrando...");
             progressDialog.show();
-
-            byte[] byteImage = null;
-            if (uriImagem != null) {
-                InputStream iStream = getContentResolver().openInputStream(uriImagem);
-                byteImage = getBytes(iStream);
-            }
 
             Mutante mutante = new Mutante(nomeMutante.getText().toString(), username, byteImage);
 

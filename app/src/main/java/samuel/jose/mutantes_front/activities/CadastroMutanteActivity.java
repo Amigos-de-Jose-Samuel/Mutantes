@@ -29,6 +29,7 @@ import samuel.jose.mutantes_front.R;
 import samuel.jose.mutantes_front.apiMutante.RetrofitConfig;
 import samuel.jose.mutantes_front.model.DefaultResponse;
 import samuel.jose.mutantes_front.model.Mutante;
+import samuel.jose.mutantes_front.model.MutanteDB;
 import samuel.jose.mutantes_front.model.NovoMutanteBody;
 
 public class CadastroMutanteActivity extends AppCompatActivity {
@@ -89,7 +90,7 @@ public class CadastroMutanteActivity extends AppCompatActivity {
             progressDialog.setMessage("Cadastrando...");
             progressDialog.show();
 
-            Mutante mutante = new Mutante(nomeMutante.getText().toString(), username, byteImage);
+            MutanteDB mutanteDB = new MutanteDB(nomeMutante.getText().toString(), username, byteImage);
 
             List<String> habilidadesList = new ArrayList<>();
             if (habilidadeUm.length() > 0) {
@@ -103,7 +104,7 @@ public class CadastroMutanteActivity extends AppCompatActivity {
             }
             String[] habilidadesArray = habilidadesList.toArray(new String[0]);
 
-            Call<DefaultResponse> callDashboard = new RetrofitConfig().getMutanteService().novoMutante(new NovoMutanteBody(mutante, habilidadesArray));
+            Call<DefaultResponse> callDashboard = new RetrofitConfig().getMutanteService().novoMutante(new NovoMutanteBody(mutanteDB, habilidadesArray));
             callDashboard.enqueue(new Callback<DefaultResponse>() {
                 @Override
                 public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {

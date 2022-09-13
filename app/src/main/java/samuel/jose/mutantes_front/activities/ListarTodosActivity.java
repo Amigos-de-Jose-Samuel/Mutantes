@@ -40,7 +40,7 @@ public class ListarTodosActivity extends AppCompatActivity {
     }
 
     private void getMutantes(Context context) {
-        ProgressDialog progressDialog = new ProgressDialog(this);
+        ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Buscando mutantes ...");
         progressDialog.show();
 
@@ -57,6 +57,41 @@ public class ListarTodosActivity extends AppCompatActivity {
                     for(Mutante mutante: listarMutantesResponse.getMutantes()) {
                         mutantes.add(mutante);
                     }
+
+                    recyclerViewMutantes = findViewById(R.id.recyclerViewMutantes);
+                    AdapterMutantes adapter = new AdapterMutantes(mutantes);
+
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                    recyclerViewMutantes.setLayoutManager(layoutManager);
+                    recyclerViewMutantes.setHasFixedSize(true);
+                    recyclerViewMutantes.addItemDecoration(new DividerItemDecoration(context, LinearLayout.VERTICAL));
+                    recyclerViewMutantes.setAdapter(adapter);
+                    recyclerViewMutantes.addOnItemTouchListener(
+                            new RecyclerItemClickListener(
+                                    getApplicationContext(),
+                                    recyclerViewMutantes,
+                                    new RecyclerItemClickListener.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(View view, int position) {
+                                            Mutante obj = mutantes.get(position);
+
+                                            Intent it = new Intent(context, DetalheMutanteActivity.class);
+                                            it.putExtra("id", obj.getId());
+                                            startActivity(it);
+                                            finish();
+                                        }
+
+                                        @Override
+                                        public void onLongItemClick(View view, int position) {
+                                        }
+
+                                        @Override
+                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                        }
+                                    }
+                            )
+                    );
                     progressDialog.dismiss();
                 }
             }
@@ -66,41 +101,5 @@ public class ListarTodosActivity extends AppCompatActivity {
 
             }
         });
-
-        recyclerViewMutantes = findViewById(R.id.recyclerViewMutantes);
-
-        AdapterMutantes adapter = new AdapterMutantes(mutantes);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerViewMutantes.setLayoutManager(layoutManager);
-        recyclerViewMutantes.setHasFixedSize(true);
-        recyclerViewMutantes.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
-        recyclerViewMutantes.setAdapter(adapter);
-        recyclerViewMutantes.addOnItemTouchListener(
-                new RecyclerItemClickListener(
-                        getApplicationContext(),
-                        recyclerViewMutantes,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                Mutante obj = mutantes.get(position);
-
-                                Intent it = new Intent(context, DetalheMutanteActivity.class);
-                                it.putExtra("id", obj.getId());
-                                startActivity(it);
-                                finish();
-                            }
-
-                            @Override
-                            public void onLongItemClick(View view, int position) {
-                            }
-
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                            }
-                        }
-                )
-        );
     }
 }

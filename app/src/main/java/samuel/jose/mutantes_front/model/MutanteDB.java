@@ -1,19 +1,19 @@
 package samuel.jose.mutantes_front.model;
 
-public class Mutante {
+public class MutanteDB {
     private int id;
     private String nome;
-    private String foto;
+    private byte[] foto;
     private int idUsuario = 1;
     private String loginUsuarioCadastro;
 
-    public Mutante(String nome, String loginUsuarioCadastro, String foto) {
+    public MutanteDB(String nome, String loginUsuarioCadastro, byte[] foto) {
         this.nome = nome;
         this.loginUsuarioCadastro = loginUsuarioCadastro;
         this.foto = foto;
     }
 
-    public Mutante(int id, String nome, String foto, int idUsuario, String loginUsuarioCadastro) {
+    public MutanteDB(int id, String nome, byte[] foto, int idUsuario, String loginUsuarioCadastro) {
         this.id = id;
         this.nome = nome;
         this.foto = foto;
@@ -21,7 +21,7 @@ public class Mutante {
         this.loginUsuarioCadastro = loginUsuarioCadastro;
     }
 
-    public Mutante(int idMutante, String nome, String image) {
+    public MutanteDB(int idMutante, String nome, byte[] image) {
         this.id = idMutante;
         this.nome = nome;
         this.foto = image;
@@ -43,11 +43,11 @@ public class Mutante {
         this.nome = nome;
     }
 
-    public String getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 

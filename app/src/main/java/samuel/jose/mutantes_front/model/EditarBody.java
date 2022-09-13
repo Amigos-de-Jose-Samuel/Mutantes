@@ -1,20 +1,20 @@
 package samuel.jose.mutantes_front.model;
 
 public class EditarBody {
-    private Mutante mutante;
+    private MutanteDB mutante;
     private String[] habilidades;
 
-    public EditarBody(Mutante mutante, String[] habilidades) {
-        this.mutante = mutante;
+    public EditarBody(MutanteDB mutanteDB, String[] habilidades) {
+        this.mutante = mutanteDB;
         this.habilidades = habilidades;
     }
 
-    public Mutante getMutante() {
+    public MutanteDB getMutante() {
         return mutante;
     }
 
-    public void setMutante(Mutante mutante) {
-        this.mutante = mutante;
+    public void setMutante(MutanteDB mutanteDB) {
+        this.mutante = mutanteDB;
     }
 
     public String[] getHabilidades() {

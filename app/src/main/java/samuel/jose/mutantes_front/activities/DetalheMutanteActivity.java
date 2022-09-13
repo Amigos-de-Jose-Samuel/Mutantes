@@ -15,6 +15,7 @@ import samuel.jose.mutantes_front.model.EditarBody;
 import samuel.jose.mutantes_front.model.ListarMutantesResponse;
 import samuel.jose.mutantes_front.model.LoginBody;
 import samuel.jose.mutantes_front.model.Mutante;
+import samuel.jose.mutantes_front.model.MutanteDB;
 import samuel.jose.mutantes_front.model.NovoMutanteBody;
 
 import android.app.ProgressDialog;
@@ -122,7 +123,7 @@ public class DetalheMutanteActivity extends AppCompatActivity {
                 byteImage = getBytes(iStream);
             }
 
-            Mutante mutante = new Mutante(idMutante, editNome.getText().toString(), byteImage);
+            MutanteDB mutanteDB = new MutanteDB(idMutante, editNome.getText().toString(), byteImage);
 
             List<String> habilidadesList = new ArrayList<>();
             if (editHabilidadeUm.length() > 0) {
@@ -136,7 +137,7 @@ public class DetalheMutanteActivity extends AppCompatActivity {
             }
             String[] habilidadesArray = habilidadesList.toArray(new String[0]);
 
-            Call<DefaultResponse> callDashboard = new RetrofitConfig().getMutanteService().editar(new EditarBody(mutante, habilidadesArray));
+            Call<DefaultResponse> callDashboard = new RetrofitConfig().getMutanteService().editar(new EditarBody(mutanteDB, habilidadesArray));
             callDashboard.enqueue(new Callback<DefaultResponse>() {
                 @Override
                 public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {

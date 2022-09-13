@@ -1,11 +1,11 @@
 package samuel.jose.mutantes_front.model;
 
 public class NovoMutanteBody {
-    private Mutante mutante;
+    private MutanteDB mutante;
     private String[] habilidades;
 
-    public NovoMutanteBody(Mutante mutante, String[] habilidadesArray) {
-        this.mutante = mutante;
+    public NovoMutanteBody(MutanteDB mutanteDB, String[] habilidadesArray) {
+        this.mutante = mutanteDB;
         this.habilidades = habilidadesArray;
     }
 }

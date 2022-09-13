@@ -28,7 +28,6 @@ import retrofit2.Response;
 import samuel.jose.mutantes_front.R;
 import samuel.jose.mutantes_front.apiMutante.RetrofitConfig;
 import samuel.jose.mutantes_front.model.DefaultResponse;
-import samuel.jose.mutantes_front.model.Mutante;
 import samuel.jose.mutantes_front.model.MutanteDB;
 import samuel.jose.mutantes_front.model.NovoMutanteBody;
 
